@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SAKOH | Digital Growth 2050</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff4d00;
+            --primary-glow: #ff6a3d;
+            --accent: #00f5ff;
+            --dark: #0a0a12;
+            --glass: rgba(15, 15, 28, 0.65);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #f0f0ff;
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-top: 120px;
+        }
+
+        /* Dynamic Background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,77,0,0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,77,0,0.06) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .glow-orbit {
+            position: fixed;
+            top: 20%;
+            left: 15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,77,0,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: orbitGlow 25s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes orbitGlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(120px, 80px) rotate(360deg); }
+        }
+
+        /* Premium Glass Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1400px;
+            background: var(--glass);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 60px;
+            padding: 14px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        nav.scrolled {
+            top: 12px;
+            padding: 12px 40px;
+            background: rgba(10,10,18,0.85);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .logo img {
+            height: 52px;
+            filter: drop-shadow(0 0 12px rgba(255,77,0,0.6));
+        }
+
+        .logo-text {
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #fff, #ffbc94);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text span {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            color: var(--primary);
+            display: block;
+            margin-top: -4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.4rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            color: #ddd;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            background: linear-gradient(90deg, #ff4d00, #ff8533);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.88rem;
+            box-shadow: 0 4px 20px rgba(255,77,0,0.4);
+            transition: all 0.3s;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,77,0,0.5);
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* HERO - 2050 Level */
+        .hero-premium {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a12 0%, #1a0f2e 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 680px;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,77,0,0.15);
+            backdrop-filter: blur(12px);
+            color: var(--primary-glow);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,77,0,0.3);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 30px rgba(255,77,0,0.2);
+        }
+
+        .hero-content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3.2rem, 8vw, 6.8rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -3px;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(90deg, #ffffff 0%, #ffbc94 50%, #00f5ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.35rem;
+            color: #bbbbd0;
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+            line-height: 1.55;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), #ff8533);
+            color: white;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 40px -10px rgba(255,77,0,0.6);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05) translateY(-4px);
+            box-shadow: 0 20px 50px -10px rgba(255,77,0,0.7);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.25);
+            padding: 18px 42px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.4s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0,245,255,0.08);
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-visual img {
+            width: 100%;
+            max-width: 520px;
+            border-radius: 32px;
+            box-shadow: 
+                0 0 80px rgba(255,77,0,0.4),
+                0 40px 100px -20px rgba(0,0,0,0.8),
+                inset 0 0 60px rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .hero-visual:hover img {
+            transform: scale(1.04) rotate(1deg);
+            box-shadow: 0 0 120px rgba(255,77,0,0.6);
+        }
+
+        /* Floating Particles / Neural Elements */
+        .neural-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent);
+            animation: neuralFloat 18s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes neuralFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(var(--x), var(--y)); }
+        }
+
+        /* Service Section - Futuristic */
+        .service-hero {
+            padding: 140px 5% 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .service-hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.2rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, #ffbc94, #00f5ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .service-content {
+            padding: 60px 5% 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 2.8rem 2rem;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: 0.7s;
+        }
+
+        .feature-item:hover::before {
+            left: 200%;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-20px);
+            border-color: var(--primary);
+            box-shadow: 0 30px 80px -20px rgba(255,77,0,0.35);
+        }
+
+        .feature-item i {
+            font-size: 3.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.65rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Footer - Ultra Premium */
+        .premium-footer {
+            background: linear-gradient(to bottom, #0a0a12, #11111f);
+            padding: 100px 5% 40px;
+            border-top: 1px solid rgba(255,77,0,0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            color: var(--primary-glow);
+            font-size: 1.1rem;
+            margin-bottom: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: white;
+            padding-left: 6px;
+        }
+
+        /* WhatsApp & Back to Top - Neon Style */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            color: white;
+            box-shadow: 0 0 40px rgba(37, 211, 102, 0.6);
+            z-index: 9999;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 60px rgba(37, 211, 102, 0.9);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 54px;
+            height: 54px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-premium { flex-direction: column; text-align: center; padding-top: 120px; }
+            .nav-links { display: none; }
+            .menu-btn { display: block; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .admin-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.92);
+            z-index: 5000;
+            padding: 1.5rem;
+        }
+        .admin-card {
+            width: min(620px, 100%);
+            background: rgba(8,8,14,0.98);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+            padding: 2rem;
+            position: relative;
+        }
+        .admin-card h2 { margin-bottom: 0.8rem; color: #fff; font-size: clamp(1.8rem, 2.2vw, 2.4rem); }
+        .admin-card p { color: #bbb; line-height: 1.75; margin-bottom: 1.5rem; }
+        .admin-card label { display: block; margin-top: 1rem; margin-bottom: 0.5rem; color: #aaa; font-size: 0.95rem; }
+        .admin-card input {
+            width: 100%; padding: 1rem 1rem; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05);
+            color: #fff; font-size: 1rem;
+        }
+        .admin-card input:focus { outline: none; border-color: var(--primary); background: rgba(255,106,61,0.08); }
+        .admin-card button { width: 100%; margin-top: 1.5rem; padding: 1rem; border: none; border-radius: 16px; background: var(--primary); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .admin-card button:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,106,61,0.25); }
+        .admin-close { position: absolute; top: 1.2rem; right: 1.3rem; font-size: 1.8rem; cursor: pointer; color: #fff; z-index: 2; }
+        .admin-error { margin-top: 1rem; color: #ff6a3d; font-size: 0.95rem; }
+        .admin-dashboard-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .admin-dashboard-header h2 { margin: 0 0 0.35rem; color: #fff; font-size: clamp(1.75rem, 2.5vw, 2.2rem); }
+        .admin-dashboard-header p { margin: 0; color: #bbb; line-height: 1.6; max-width: 58rem; }
+        .admin-dashboard-grid { display: grid; gap: 1.25rem; grid-template-columns: 1.75fr 0.9fr; }
+        .admin-dashboard-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 1.5rem; color: #eee; min-height: 0; overflow: hidden; }
+        .admin-dashboard-card.admin-quote-card { display: flex; flex-direction: column; }
+        .admin-dashboard-card.admin-quote-card #quotesList { margin-top: 0.75rem; max-height: 32rem; overflow-y: auto; padding-right: 0.35rem; }
+        .admin-dashboard-card.admin-quote-card #quotesList .quote-entry { margin-bottom: 1rem; }
+        .admin-dashboard-card h3 { margin-bottom: 0.75rem; color: #fff; }
+        .admin-logout { width: auto; min-width: 180px; padding: 1rem 1.3rem; border: none; border-radius: 16px; background: #1a1a24; color: #fff; font-weight: 700; cursor: pointer; margin-top: 0; align-self: flex-start; flex-shrink: 0; }
+        .admin-card { display: flex; flex-direction: column; max-height: min(92vh, 780px); overflow: hidden; }
+
+        @media (max-width: 768px) {
+            .admin-dashboard-grid { grid-template-columns: 1fr; }
+            nav { padding: 14px 20px; }
+            .hero-visual img { max-width: 380px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Background -->
+    <div class="bg-grid"></div>
+    <div class="glow-orbit"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">
+            <img src="sakoh.PNG" alt="SAKOH Logo">
+            
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="business-setup.html">Business Setup</a>
+            <a href="registration.html">Registration</a>
+            <a href="online-presence.html">Online Presence</a>
+            <a href="digital-growth.html">Digital Growth</a>
+            <a href="media-production.html">Media Production</a>
+            <a href="business-tools.html">Business Tools</a>
+        </div>
+
+        <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" style="position: fixed; top: 0; right: -100%; width: 75%; height: 100%; background: rgba(10,10,18,0.98); backdrop-filter: blur(30px); z-index: 20000; padding: 6rem 2rem; transition: 0.5s ease;">
+        <div onclick="toggleMenu()" style="position:absolute; top:25px; right:25px; font-size:2.5rem; cursor:pointer;">×</div>
+        <a href="index.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Home</a>
+        <a href="business-setup.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Business Setup</a>
+        <a href="registration.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Registration</a>
+        <a href="online-presence.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Online Presence</a>
+        <a href="digital-growth.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Digital Growth</a>
+        <a href="media-production.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Media Production</a>
+        <a href="business-tools.html" style="color:white; font-size:1.4rem; display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1);">Business Tools</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero-premium">
+        <div class="hero-bg"></div>
+        
+        <div class="hero-content" data-aos="fade-up">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i> NEURO•GROWTH PLATFORM 2050
+            </div>
+            <h1>Amplify Reality.<br>Scale Exponentially.</h1>
+            <p>AI-native strategies, quantum-inspired analytics, and immersive brand experiences that turn visitors into lifelong advocates.</p>
+            
+            <div class="hero-buttons">
+                <a href="#quote" class="btn-primary">Ignite Growth Now <i class="fas fa-arrow-right"></i></a>
+                <a href="#" onclick="watchDemo()" class="btn-secondary">Watch 2050 Demo</a>
+            </div>
+        </div>
+
+        <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
+            <img src="https://live.staticflickr.com/65535/55212709936_8dee6177f4_z.jpg" alt="Future Digital Growth">
+            
+            <!-- Floating neural particles -->
+            <div class="neural-particle" style="--x: 180px; --y: -120px; animation-delay: 0s;"></div>
+            <div class="neural-particle" style="--x: -140px; --y: 90px; animation-delay: 4s; width:6px; height:6px;"></div>
+            <div class="neural-particle" style="--x: 220px; --y: 160px; animation-delay: 9s;"></div>
+        </div>
+    </section>
+
+    <!-- Service Hero -->
+    <section class="service-hero">
+        <h1 data-aos="fade-up">Future-Proof Digital Growth</h1>
+        <p style="font-size:1.25rem; max-width:680px; margin:0 auto; color:#aaa;" data-aos="fade-up" data-aos-delay="100">
+            From AI-orchestrated campaigns to immersive 3D brand worlds — we don’t just grow businesses, we evolve them.
+        </p>
+    </section>
+
+    <!-- What We Offer -->
+    <section class="service-content">
+        <h2 style="text-align:center; font-size:2.8rem; margin-bottom:3rem; background: linear-gradient(90deg,#fff,#ffbc94); -webkit-background-clip:text; color:transparent;" data-aos="fade-up">Core Capabilities</h2>
+        
+        <div class="service-features">
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="0">
+                <i class="fas fa-globe"></i>
+                <h3>Hyper-Adaptive Websites</h3>
+                <p>Self-evolving interfaces powered by real-time AI that adapt to user behavior and predict needs before they arise.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="150">
+                <i class="fas fa-brain"></i>
+                <h3>AI Brand Intelligence</h3>
+                <p>Autonomous brand systems that maintain consistency, generate content, and optimize presence across all realities (digital + spatial).</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-chart-network"></i>
+                <h3>Quantum Growth Analytics</h3>
+                <p>Predictive intelligence that doesn’t just analyze data — it anticipates market shifts and customer evolution in real time.</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:5rem;">
+            <a href="index.html#quote" class="btn-primary" style="padding: 20px 50px; font-size:1.15rem;">Begin Your 2050 Transformation</a>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>SAKOH</h4>
+                <p style="max-width:280px;">Media • Tech • Design<br>
+                <strong>Building the next decade of African excellence.</strong></p>
+                <div class="social-icons" style="margin-top:2rem; display:flex; gap:1.2rem; font-size:1.8rem;">
+                    <a href="#" style="color:#aaa; transition:0.3s;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color:#aaa; transition:0.3s;"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" style="color:#aaa; transition:0.3s;"><i class="fab fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <a href="business-setup.html">Business Setup</a>
+                <a href="registration.html">Company Registration</a>
+                <a href="online-presence.html">Digital Presence</a>
+                <a href="digital-growth.html">AI-Powered Growth</a>
+                <a href="media-production.html">Immersive Media</a>
+                <a href="business-tools.html">Enterprise Tools</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers 2050</a>
+                <a href="#">Contact</a>
+                <a href="#" id="adminLink">Admin Portal</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <p><a href="tel:0712803752" style="color:#aaa;">071 280 3752</a></p>
+                <p><a href="mailto:infor@sakoh.co.za" style="color:#aaa;">infor@sakoh.co.za</a></p>
+                <p>www.sakoh.co.za</p>
+                <p>Durban, South Africa → Global</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:6rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,0.08); color:#666; font-size:0.95rem;">
+            © 2026–2050 SAKOH MEDIA TECH DESIGN • Engineered for Exponential Growth
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <div class="whatsapp-float" id="whatsappBtn">
+        <i class="fab fa-whatsapp"></i>
+    </div>
+
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+<div class="admin-overlay" id="adminLoginModal">
+    <div class="admin-card">
+        <div class="admin-close" id="closeAdminLogin">&times;</div>
+        <h2>Admin Access</h2>
+        <p>Enter your secure administrator credentials to access the protected dashboard.</p>
+        <label for="adminUser">Username</label>
+        <input type="text" id="adminUser" placeholder="" autocomplete="username">
+        <label for="adminPass">Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password" autocomplete="current-password">
+        <button id="adminLoginBtn">Sign In</button>
+        <div class="admin-error" id="adminError"></div>
+    </div>
+</div>
+
+<div class="admin-overlay" id="adminDashboardModal">
+    <div class="admin-card">
+        <div class="admin-close" id="closeAdminDashboard">&times;</div>
+        <div class="admin-dashboard-header">
+            <div>
+                <h2>Admin Dashboard</h2>
+                <p>Welcome, <strong>sakoh@admin</strong>. This area is protected and only accessible through valid administrator credentials.</p>
+            </div>
+            <button class="admin-logout" id="adminLogoutBtn">Logout</button>
+        </div>
+        <div class="admin-dashboard-grid">
+            <div class="admin-dashboard-card">
+                <h3>System Status</h3>
+                <p>AI analytics and lead management systems operational. Neural network processing at 98% efficiency.</p>
+            </div>
+            <div class="admin-dashboard-card">
+                <h3>Current Status</h3>
+                <p>Admin access granted. Use the logout button below once your session is complete.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            easing: 'cubic-bezier(0.23, 1, 0.32, 1)'
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.style.right = menu.style.right === '0%' ? '-100%' : '0%';
+        }
+
+        // WhatsApp
+        document.getElementById('whatsappBtn').addEventListener('click', () => {
+            window.open('https://wa.me/27712803752', '_blank');
+        });
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Demo placeholder
+        function watchDemo() {
+            alert("🚀 2050 Demo Video would play here.\n\nImagine neural interfaces, holographic brand experiences, and AI agents closing deals for you.");
+        }
+
+        // Admin System
+        const adminLink = document.getElementById('adminLink');
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        const adminDashboardModal = document.getElementById('adminDashboardModal');
+        const closeAdminLogin = document.getElementById('closeAdminLogin');
+        const closeAdminDashboard = document.getElementById('closeAdminDashboard');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminUser = document.getElementById('adminUser');
+        const adminPass = document.getElementById('adminPass');
+        const adminError = document.getElementById('adminError');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+        const ADMIN_USERNAME = 'sakoh@admin';
+        const ADMIN_PASSWORD = 'Sakoh@960226';
+        let adminAuthenticated = false;
+
+        function openAdminLogin() {
+            adminError.textContent = '';
+            adminUser.value = '';
+            adminPass.value = '';
+            adminLoginModal.style.display = 'flex';
+            adminUser.focus();
+        }
+
+        function closeAdminLoginModal() { adminLoginModal.style.display = 'none'; }
+        function openAdminDashboard() { adminDashboardModal.style.display = 'flex'; }
+        function closeAdminDashboardModal() { adminDashboardModal.style.display = 'none'; }
+
+        adminLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (adminAuthenticated) openAdminDashboard();
+            else openAdminLogin();
+        });
+
+        closeAdminLogin.addEventListener('click', closeAdminLoginModal);
+        closeAdminDashboard.addEventListener('click', closeAdminDashboardModal);
+        adminLoginBtn.addEventListener('click', () => {
+            const username = adminUser.value.trim();
+            const password = adminPass.value;
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                adminAuthenticated = true;
+                closeAdminLoginModal();
+                openAdminDashboard();
+            } else {
+                adminError.textContent = 'Invalid username or password. Please try again.';
+            }
+        });
+
+        adminLogoutBtn.addEventListener('click', () => {
+            adminAuthenticated = false;
+            closeAdminDashboardModal();
+            openAdminLogin();
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeAdminLoginModal();
+                closeAdminDashboardModal();
+            }
+        });
+    </script>
+</body>
+</html>

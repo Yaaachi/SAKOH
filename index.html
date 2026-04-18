@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SAKOH | Media Tech Design Company</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c9522e;
+            --primary-dark: #9b4022;
+            --primary-glow: rgba(255, 106, 61, 0.35);
+            --bg-deep: #0a0a0f;
+            --bg-elevated: #111118;
+            --glass-bg: rgba(15, 15, 25, 0.65);
+            --glass-border: rgba(105, 103, 103, 0.096);
+            --text-light: #bdbdbd;
+            --text-dim: #b0b0c0;
+            --transition-smooth: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* custom scroll */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img {
+            height: 44px;
+            filter: drop-shadow(0 0 6px rgba(255,106,61,0.3));
+        }
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            color: var(--primary);
+            font-size: 0.7rem;
+            display: block;
+            letter-spacing: 1px;
+        }
+        .menu-btn {
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #fff;
+        }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.05); }
+
+        /* mobile menu overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            background: rgba(2, 2, 12, 0.98);
+            backdrop-filter: blur(32px);
+            z-index: 2000;
+            padding: 6rem 2.5rem;
+            transition: 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            border-left: 1px solid var(--glass-border);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.25s;
+        }
+        .mobile-menu a:hover { color: var(--primary); padding-left: 12px; border-color: var(--primary); }
+        .close-menu {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            font-size: 2.3rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-menu:hover { color: var(--primary); transform: rotate(90deg); }
+
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        .hero-content {
+            z-index: 2;
+            max-width: 950px;
+            padding: 0 5%;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,106,61,0.15);
+            backdrop-filter: blur(8px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #313130);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 650px;
+            margin: 0 auto 2rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary, .btn-outline {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(255,106,61,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255,106,61,0.5);
+        }
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: #fff;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Trust bar */
+        .trust-bar {
+            background: rgba(5,5,12,0.6);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        .trust-item i { color: var(--primary); }
+
+        /* section common */
+        .section-padding {
+            padding: 6rem 5%;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .section-title h2 span { color: var(--primary); }
+        .section-sub {
+            color: var(--text-dim);
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        /* Interactive infographic (improved) */
+        #services {
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,106,61,0.08), transparent);
+        }
+        .infographic-container {
+            position: relative;
+            width: min(100%, 720px);
+            height: min(100vw, 720px);
+            max-width: 720px;
+            max-height: 720px;
+            min-height: 520px;
+            margin: 0 auto 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hub-center {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 50px rgba(255,106,61,0.15), inset 0 0 18px rgba(0,0,0,0.5);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.75rem;
+            transition: 0.3s;
+        }
+        .hub-content {
+            transition: opacity 0.35s ease, transform 0.3s;
+        }
+        .hub-content.fade-out {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        .hub-icon { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
+        .hub-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .hub-desc { font-size: 0.9rem; color: #bbb; margin-bottom: 1rem; }
+        .hub-list { list-style: none; margin-bottom: 1.2rem; text-align: left; width: 100%; }
+        .hub-list li { margin: 6px 0; font-size: 0.85rem; color: #ccc; display: flex; align-items: center; gap: 8px; }
+        .hub-list li i { color: var(--primary); font-size: 0.7rem; }
+        .hub-action {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .hub-action:hover { background: var(--primary); color: #fff; }
+
+        .orbit-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+        }
+        .orbit-ring::before {
+            content: "";
+            position: absolute;
+            inset: 16%;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.08);
+            filter: blur(1px);
+            opacity: 0.85;
+        }
+        .node-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 88px;
+            height: 88px;
+            margin: -44px 0 0 -44px;
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .orbit-node {
+            width: 100%;
+            height: 100%;
+            background: rgba(12,12,22,0.88);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #aaa;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
+        }
+        .orbit-node i { font-size: 1.65rem; margin-bottom: 5px; }
+        .orbit-node span { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; }
+        .orbit-node:hover { border-color: var(--primary); color: #fff; transform: scale(1.08); background: rgba(255,106,61,0.2); }
+        .node-wrapper.active .orbit-node { background: var(--primary); color: #fff; box-shadow: 0 0 25px rgba(255,106,61,0.6); transform: scale(1.1); }
+
+        /* Premium features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.75rem;
+            margin-top: 3rem;
+            max-width: 1140px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px;
+            padding: 1.8rem;
+            transition: var(--transition-smooth);
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,106,61,0.45);
+            box-shadow: 0 28px 50px -18px rgba(0,0,0,0.55);
+        }
+        .feature-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .feature-card h3 { font-size: 1.35rem; margin-bottom: 0.65rem; }
+        .feature-card p { color: var(--text-dim); line-height: 1.6; margin-bottom: 1rem; }
+        .feature-note {
+            font-size: 0.84rem;
+            color: #9ea5b8;
+            margin-bottom: 1.25rem;
+            line-height: 1.65;
+        }
+        .feature-explore {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 0.8rem 1.25rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,106,61,0.25);
+            background: rgba(255,106,61,0.08);
+            color: var(--primary);
+            font-size: 0.88rem;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+        }
+        .feature-explore:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* minimal image gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            border-radius: 28px;
+            overflow: hidden;
+            background: #0c0c14;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: 0.5s;
+        }
+        .gallery-item:hover img { transform: scale(1.03); }
+        .gallery-caption {
+            padding: 1rem;
+            background: #0a0a10;
+        }
+        .gallery-caption h4 { font-size: 1rem; margin-bottom: 0.2rem; }
+        .gallery-caption p { font-size: 0.75rem; color: var(--primary); letter-spacing: 0.5px; }
+
+        /* Quote form premium */
+        .quote-section {
+            background: linear-gradient(135deg, #0b0b14, #07070e);
+            border-radius: 48px;
+            margin: 3rem 5% 5rem;
+            padding: 4rem 3rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+        }
+        .quote-form {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .quote-form input, .quote-form select, .quote-form textarea {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem 1.2rem;
+            border-radius: 24px;
+            color: white;
+            font-family: inherit;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .quote-form input:focus, .quote-form select:focus, .quote-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,106,61,0.05);
+        }
+        .full-width { grid-column: span 2; }
+        .quote-form button {
+            background: var(--primary);
+            border: none;
+            padding: 1rem;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.3s;
+        }
+        .quote-form button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,106,61,0.4); }
+
+        /* Testimonials swiper */
+        .testimonials {
+            background: radial-gradient(circle at 20% 30%, rgba(255,106,61,0.03), transparent);
+            padding: 5rem 5%;
+        }
+        .swiper-slide {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        /* footer & floating */
+        .premium-footer {
+            background: #020208;
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(255,106,61,0.2);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .footer-col h4 { color: var(--primary); margin-bottom: 1.2rem; }
+        .footer-col a { display: block; color: #aaa; text-decoration: none; margin: 0.6rem 0; transition: 0.2s; font-size: 0.9rem; }
+        .footer-col a:hover { color: #fff; padding-left: 5px; }
+        .whatsapp-float {
+            position: fixed; bottom: 25px; right: 25px; background: #25D366;
+            width: 55px; height: 55px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            z-index: 1000; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .whatsapp-float:hover { transform: scale(1.08); }
+        .back-to-top {
+            position: fixed; bottom: 25px; left: 25px; background: rgba(255,106,61,0.8);
+            width: 45px; height: 45px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            opacity: 0; transition: 0.2s; z-index: 1000;
+        }
+        .back-to-top.show { opacity: 1; }
+
+        .admin-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.92);
+            z-index: 5000;
+            padding: 1.5rem;
+        }
+        .admin-card {
+            width: min(620px, 100%);
+            background: rgba(8,8,14,0.98);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+            padding: 2rem;
+            position: relative;
+        }
+        .admin-card h2 { margin-bottom: 0.8rem; color: #fff; font-size: clamp(1.8rem, 2.2vw, 2.4rem); }
+        .admin-card p { color: #bbb; line-height: 1.75; margin-bottom: 1.5rem; }
+        .admin-card label { display: block; margin-top: 1rem; margin-bottom: 0.5rem; color: #aaa; font-size: 0.95rem; }
+        .admin-card input {
+            width: 100%; padding: 1rem 1rem; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05);
+            color: #fff; font-size: 1rem;
+        }
+        .admin-card input:focus { outline: none; border-color: var(--primary); background: rgba(255,106,61,0.08); }
+        .admin-card button { width: 100%; margin-top: 1.5rem; padding: 1rem; border: none; border-radius: 16px; background: var(--primary); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .admin-card button:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,106,61,0.25); }
+        .admin-close { position: absolute; top: 1.2rem; right: 1.3rem; font-size: 1.8rem; cursor: pointer; color: #fff; z-index: 2; }
+        .admin-error { margin-top: 1rem; color: #ff6a3d; font-size: 0.95rem; }
+        .admin-dashboard-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .admin-dashboard-header h2 { margin: 0 0 0.35rem; color: #fff; font-size: clamp(1.75rem, 2.5vw, 2.2rem); }
+        .admin-dashboard-header p { margin: 0; color: #bbb; line-height: 1.6; max-width: 58rem; }
+        .admin-dashboard-grid { display: grid; gap: 1.25rem; grid-template-columns: 1.75fr 0.9fr; }
+        .admin-dashboard-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 1.5rem; color: #eee; min-height: 0; overflow: hidden; }
+        .admin-dashboard-card.admin-quote-card { display: flex; flex-direction: column; }
+        .admin-dashboard-card.admin-quote-card #quotesList { margin-top: 0.75rem; max-height: 32rem; overflow-y: auto; padding-right: 0.35rem; }
+        .admin-dashboard-card.admin-quote-card #quotesList .quote-entry { margin-bottom: 1rem; }
+        .admin-dashboard-card h3 { margin-bottom: 0.75rem; color: #fff; }
+        .admin-logout { width: auto; min-width: 180px; padding: 1rem 1.3rem; border: none; border-radius: 16px; background: #1a1a24; color: #fff; font-weight: 700; cursor: pointer; margin-top: 0; align-self: flex-start; flex-shrink: 0; }
+        .admin-card { display: flex; flex-direction: column; max-height: min(92vh, 780px); overflow: hidden; }
+
+        @media (max-width: 900px) {
+            .admin-dashboard-grid { grid-template-columns: 1fr; }
+            .infographic-container { width: 480px; height: 480px; }
+            .hub-center { width: 240px; height: 240px; padding: 1rem; }
+            .hub-title { font-size: 1.2rem; }
+            .hub-desc, .hub-list { display: none; }
+            .node-wrapper { width: 70px; height: 70px; margin: -35px 0 0 -35px; }
+            .orbit-node i { font-size: 1.4rem; }
+            .orbit-node span { font-size: 0.6rem; }
+        }
+        @media (max-width: 550px) {
+            .infographic-container { width: 340px; height: 340px; }
+            .hub-center { width: 180px; height: 180px; }
+            .node-wrapper { width: 55px; height: 55px; margin: -27px 0 0 -27px; }
+            .orbit-node i { font-size: 1rem; }
+            .orbit-node span { display: none; }
+            .quote-form { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <img src="sakoh.PNG" alt="SAKOH Logo">
+        
+    </div>
+    <div class="menu-btn"><i class="fas fa-bars"></i></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <div class="close-menu">&times;</div>
+    <a href="#home">Home</a>
+    <a href="#services">Ecosystem</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#work">Showcase</a>
+    <a href="#quote">Quote</a>
+    <a href="#testimonials">Clients</a>
+</div>
+
+<!-- Hero -->
+<section id="home" class="hero">
+    <div id="particles-js"></div>
+    <div class="hero-content" data-aos="fade-up">
+        
+        <h1>Build. Launch. Dominate.</h1>
+        <p>From zero to market leader — SAKOH fuses media, tech, and design. Value, delivered with cinematic precision.</p>
+        <div class="btn-group">
+            <a href="#quote" class="btn-primary">Start Your Project →</a>
+            <a href="#services" class="btn-outline">Explore Capabilities</a>
+        </div>
+    </div>
+</section>
+
+<div class="trust-bar">
+    <div class="trust-item"><i class="fas fa-check-circle"></i> 450+ Projects Delivered</div>
+    <div class="trust-item"><i class="fas fa-globe"></i> aiming for global expansion</div>
+    <div class="trust-item"><i class="fas fa-star"></i> 98% Client Retention</div>
+    <div class="trust-item"><i class="fas fa-trophy"></i> Aiming for the best</div>
+</div>
+
+<!-- Interactive Infographic (Premium Orbit) -->
+<section id="services" class="section-padding">
+    <div class="section-title" data-aos="fade-down">
+        <h2>✦ The <span>SAKOH</span> Ecosystem ✦</h2>
+        <div class="section-sub">Select any node to explore a specialist service lane. Each card includes a compact summary and an Explore button for more detail.</div>
+    </div>
+    <div class="infographic-container" data-aos="zoom-in">
+        <div class="hub-center" id="hubCenter">
+            <div class="hub-content" id="hubContent">
+                <i class="fas fa-fingerprint hub-icon" id="hubIcon"></i>
+                <h3 class="hub-title" id="hubTitle">360° Solutions</h3>
+                <p class="hub-desc" id="hubDesc">Interact with the orbital clusters to explore our premium services.</p>
+                <ul class="hub-list" id="hubList"></ul>
+                <a href="#quote" class="hub-action" id="hubLink">Initiate Project</a>
+            </div>
+        </div>
+        <div class="orbit-ring" id="orbitRing"></div>
+    </div>
+</section>
+
+<!-- Capabilities Grid (extra premium info) -->
+<section id="capabilities" class="section-padding">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Core <span>Capabilities</span></h2>
+        <div class="section-sub">End-to-end production & digital growth architecture</div>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up">
+            <div>
+                <div class="feature-icon"><i class="fas fa-video"></i></div>
+                <h3>Live Broadcast</h3>
+                <p>4K multi-cam streaming with live graphics and global RTMP delivery.</p>
+                <p class="feature-note">Professional broadcast workflows for events, seminars, and hybrid productions.</p>
+            </div>
+            <a class="feature-explore" href="media-production.html">Explore</a>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="80">
+            <div>
+                <div class="feature-icon"><i class="fas fa-pen-fancy"></i></div>
+                <h3>Graphic Identity</h3>
+                <p>Brand assets, flyers, posters and thumbnails designed for recall and conversion.</p>
+                <p class="feature-note">Clean visuals with strong brand impact for both digital and print campaigns.</p>
+            </div>
+            <a class="feature-explore" href="business-tools.html">Explore</a>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="160">
+            <div>
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Digital Growth</h3>
+                <p>Websites, SEO and funnels that turn attention into measurable business momentum.</p>
+                <p class="feature-note">Strategic digital experiences built to increase traffic, leads and conversions.</p>
+            </div>
+            <a class="feature-explore" href="digital-growth.html">Explore</a>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="240">
+            <div>
+                <div class="feature-icon"><i class="fas fa-music"></i></div>
+                <h3>Audio Post</h3>
+                <p>Studio mixing, podcast production and immersive sound design for broadcast-ready content.</p>
+                <p class="feature-note">Clean, commercial audio polishing for video, events and branded storytelling.</p>
+            </div>
+            <a class="feature-explore" href="media-production.html">Explore</a>
+        </div>
+    </div>
+</section>
+
+<!-- Minimal image gallery (premium showcase) -->
+<section id="work" class="section-padding" style="background: #07070c;">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Recent <span>Creations</span></h2>
+        <div class="section-sub">Visual precision — minimal, clear, impactful.</div>
+    </div>
+    <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up"><img src="https://live.staticflickr.com/65535/55213140320_2ed3830c82_b.jpg" alt="Poster Design"><div class="gallery-caption"><h4>Conference Branding</h4><p>Event Poster Suite</p></div></div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="60"><img src="https://live.staticflickr.com/31337/55213006399_759d013c21_b.jpg" alt="Video Editing"><div class="gallery-caption"><h4>Cinematic Edit</h4><p>4K Color Grading</p></div></div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="120"><img src="https://live.staticflickr.com/65535/55213106905_491cd9d6f2_b.jpg" alt="Corporate Flyer"><div class="gallery-caption"><h4>Corporate Pricelist</h4><p>Minimalist Layout</p></div></div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="180"><img src="https://live.staticflickr.com/65535/55212866083_2a4afae2a3.jpg" alt="Thumbnail Design"><div class="gallery-caption"><h4>YouTube Thumbnails</h4><p>High CTR Design</p></div></div>
+    </div>
+</section>
+
+<!-- Quote Form Premium -->
+<section id="quote" class="quote-section" data-aos="fade-up">
+    <div class="section-title" style="margin-bottom: 2rem;">
+        <h2>Request a <span>Production Quote</span></h2>
+        <div class="section-sub">Tell us about your vision — we'll reply within 4 hours.</div>
+    </div>
+    <form class="quote-form" id="quoteForm">
+        <input type="text" name="name" placeholder="Full name *" required>
+        <input type="email" name="email" placeholder="Email address *" required>
+        <input type="tel" name="phone" placeholder="Phone">
+        <select name="service">
+            <option disabled selected>Select service focus</option>
+            <option>Live Streaming Production</option>
+            <option>Video Editing / Post-Production</option>
+            <option>Graphic Design & Branding</option>
+            <option>Full Media Campaign</option>
+        </select>
+        <textarea name="message" class="full-width" rows="3" placeholder="Describe your project, goals, or event..."></textarea>
+        <button type="submit" class="full-width">Submit Blueprint Request →</button>
+        <p id="formResponse" class="full-width" style="text-align:center; margin-top:0.8rem; font-size:0.8rem; color:var(--primary);"></p>
+    </form>
+</section>
+
+<!-- Testimonials Swiper -->
+<section id="testimonials" class="testimonials">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Trusted by <span>Industry Leaders</span></h2>
+    </div>
+    <div class="swiper mySwiper" data-aos="fade-up">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><i class="fas fa-star" style="color:#ffaa00;"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><p style="margin: 1rem 0;">"SAKOH transformed our broadcast quality. The team's technical depth and creative eye are unmatched."</p><h4 style="color:var(--primary);">L. Mkhize, CEO Beeline</h4></div>
+            <div class="swiper-slide"><i class="fas fa-star" style="color:#ffaa00;"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><p style="margin: 1rem 0;">"From live streaming to graphic assets — SAKOH delivers premium results on tight deadlines."</p><h4 style="color:var(--primary);">T. Ndlovu, SwiftLegal</h4></div>
+            <div class="swiper-slide"><i class="fas fa-star" style="color:#ffaa00;"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><p style="margin: 1rem 0;">"Our church services reached a global audience because of their multi-cam expertise."</p><h4 style="color:var(--primary);">Pastor M. Gracepoint</h4></div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<footer class="premium-footer">
+    <div class="footer-grid">
+        <div class="footer-col"><h4>SAKOH</h4><p style="color:#888;">Media. Tech. Design.<br>Build. Launch. Grow.</p><div class="social-icons" style="margin-top:1rem;"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a></div></div>
+        <div class="footer-col"><h4>Services</h4><a href="#services">Live Streaming</a><a href="#services">Post-Production</a><a href="#services">Graphic Design</a><a href="#services">Digital Growth</a></div>
+        <div class="footer-col"><h4>Support</h4><a href="#quote">Request Quote</a><a href="#" id="adminLink">Admin Login</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+        <div class="footer-col"><h4>Contact</h4><p>071 280 3752</p><p>infor@sakoh.co.za</p><p>www.sakoh.co.za</p><p>Durban / Mandeni</p></div>
+    </div>
+    <div style="text-align:center; border-top:1px solid rgba(255,255,255,0.05); padding-top:2rem; margin-top:1rem; font-size:0.75rem; color:#555;">© 2026 SAKOH MEDIA TECH DESIGN — 10x Excellence | Minimal imagery, maximum impact</div>
+</footer>
+
+<div class="whatsapp-float" id="whatsappBtn"><i class="fab fa-whatsapp fa-2x"></i></div>
+<div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+<div class="admin-overlay" id="adminLoginModal">
+    <div class="admin-card">
+        <div class="admin-close" id="closeAdminLogin">&times;</div>
+        <h2>Admin Access</h2>
+        <p>Enter your secure administrator credentials to access the protected dashboard.</p>
+        <label for="adminUser">Username</label>
+        <input type="text" id="adminUser" placeholder="" autocomplete="username">
+        <label for="adminPass">Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password" autocomplete="current-password">
+        <button id="adminLoginBtn">Sign In</button>
+        <div class="admin-error" id="adminError"></div>
+    </div>
+</div>
+
+<div class="admin-overlay" id="adminDashboardModal">
+    <div class="admin-card">
+        <div class="admin-close" id="closeAdminDashboard">&times;</div>
+        <h2>Secure Dashboard</h2>
+        <p>Welcome, <strong>sakoh@admin</strong>. This area is protected and only accessible through valid administrator credentials.</p>
+        <div class="admin-dashboard-header">
+            
+            <button class="admin-logout" id="adminLogoutBtn">Logout</button>
+        </div>
+        <div class="admin-dashboard-grid">
+            <div class="admin-dashboard-card admin-quote-card">
+                <h3>Quote Submissions</h3>
+                <div id="quotesList"></div>
+            </div>
+            <div class="admin-dashboard-card">
+                <h3>Current Status</h3>
+                <p>Admin access granted. Use the logout button below once your session is complete.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out' });
+
+    particlesJS("particles-js", {
+        particles: { number: { value: 55 }, color: { value: "#ff6a3d" }, shape: { type: "circle" }, opacity: { value: 0.25 }, size: { value: 2.5 }, move: { enable: true, speed: 1.2, direction: "none", random: true } },
+        interactivity: { events: { onhover: { enable: true, mode: "repulse" } } }
+    });
+
+    // Mobile menu
+    const menuBtn = document.querySelector('.menu-btn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenuBtn = document.querySelector('.close-menu');
+    menuBtn.onclick = () => mobileMenu.classList.add('active');
+    closeMenuBtn.onclick = () => mobileMenu.classList.remove('active');
+    document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('active')));
+
+    // --- Orbit Interactive (refined) ---
+    const servicesData = [
+        { id: 0, icon: "fas fa-pen-fancy", title: "Brand Identity", desc: "Full visual identity systems, flyers, cards, and apparel.", link: "business-setup.html", list: ["Logo & Brand Guides", "Flyers, Posters, Apparel"] },
+        { id: 1, icon: "fas fa-file-signature", title: "Business Registration", desc: "CIPC, tax compliance, and legal structuring.", link: "registration.html", list: ["Company Registration", "Tax & Annual Compliance"] },
+        { id: 2, icon: "fas fa-map-marker-alt", title: "Local SEO", desc: "Google Maps dominance and social media blueprinting.", link: "online-presence.html", list: ["Google Business Profile", "Local Listings"] },
+        { id: 3, icon: "fas fa-chart-line", title: "Web & Growth", desc: "High-conversion websites and algorithmic scaling.", link: "digital-growth.html", list: ["Full-Stack Dev", "Brand Management"] },
+        { id: 4, icon: "fas fa-video", title: "Media Production", desc: "Cinematic live broadcasting & 4K post-production.", link: "media-production.html", list: ["Multi-Cam Streaming", "Video Editing Suite"] },
+        { id: 5, icon: "fas fa-phone-alt", title: "Business Telecom", desc: "VoIP landlines and cloud PBX infrastructure.", link: "business-tools.html", list: ["Landline Registration", "Cloud VoIP Setup"] }
+    ];
+    const orbitRing = document.getElementById('orbitRing');
+    const hubContent = document.getElementById('hubContent');
+    const hubIcon = document.getElementById('hubIcon');
+    const hubTitle = document.getElementById('hubTitle');
+    const hubDesc = document.getElementById('hubDesc');
+    const hubList = document.getElementById('hubList');
+    const hubLink = document.getElementById('hubLink');
+
+    let currentRotation = 0;
+    let radius = 260; // default for desktop, recalc
+    function setRadius() {
+        const width = window.innerWidth;
+        radius = width > 1100 ? 300 : width > 900 ? 260 : width > 700 ? 210 : 150;
+    }
+    setRadius();
+
+    function updateNodePositions(rotationDeg) {
+        const nodes = document.querySelectorAll('.node-wrapper');
+        nodes.forEach((wrapper, idx) => {
+            const baseAngle = parseFloat(wrapper.dataset.baseAngle);
+            const finalAngle = baseAngle + rotationDeg;
+            const rad = (finalAngle * Math.PI) / 180;
+            const x = Math.cos(rad) * radius;
+            const y = Math.sin(rad) * radius;
+            wrapper.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        });
+    }
+
+    servicesData.forEach((service, idx) => {
+        const angle = (360 / servicesData.length) * idx;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'node-wrapper';
+        wrapper.dataset.baseAngle = angle;
+        wrapper.dataset.index = idx;
+        const nodeDiv = document.createElement('div');
+        nodeDiv.className = 'orbit-node';
+        nodeDiv.innerHTML = `<i class="${service.icon}"></i><span>${service.title.split(' ')[0]}</span>`;
+        nodeDiv.onclick = () => selectNode(idx);
+        wrapper.appendChild(nodeDiv);
+        orbitRing.appendChild(wrapper);
+    });
+
+    function selectNode(index) {
+        document.querySelectorAll('.node-wrapper').forEach(w => w.classList.remove('active'));
+        const activeWrapper = document.querySelector(`.node-wrapper[data-index='${index}']`);
+        activeWrapper.classList.add('active');
+        const targetAngle = -parseFloat(activeWrapper.dataset.baseAngle);
+        currentRotation = targetAngle;
+        updateNodePositions(currentRotation);
+        // update hub
+        hubContent.classList.add('fade-out');
+        setTimeout(() => {
+            const data = servicesData[index];
+            hubIcon.className = `${data.icon} hub-icon`;
+            hubTitle.innerText = data.title;
+            hubDesc.innerText = data.desc;
+            hubList.innerHTML = data.list.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('');
+            hubLink.href = data.link;
+            hubLink.innerText = `Explore ${data.title.split(' ')[0]}`;
+            hubContent.classList.remove('fade-out');
+        }, 280);
+    }
+
+    window.addEventListener('resize', () => { setRadius(); updateNodePositions(currentRotation); });
+    setTimeout(() => { selectNode(0); }, 200);
+
+    // Form handling
+    document.getElementById('quoteForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('formResponse').innerHTML = '✅ Quote sent! SAKOH will contact you shortly.';
+        setTimeout(() => document.getElementById('formResponse').innerHTML = '', 4000);
+        e.target.reset();
+    });
+
+    // Back to top & whatsapp
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    document.getElementById('backToTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('whatsappBtn').onclick = () => window.open('https://wa.me/27712803752', '_blank');
+
+    const adminLink = document.getElementById('adminLink');
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const adminDashboardModal = document.getElementById('adminDashboardModal');
+    const closeAdminLogin = document.getElementById('closeAdminLogin');
+    const closeAdminDashboard = document.getElementById('closeAdminDashboard');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const adminUser = document.getElementById('adminUser');
+    const adminPass = document.getElementById('adminPass');
+    const adminError = document.getElementById('adminError');
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+    const ADMIN_USERNAME = 'sakoh@admin';
+    const ADMIN_PASSWORD = 'Sakoh@960226';
+    let adminAuthenticated = false;
+
+    function openAdminLogin() {
+        adminError.textContent = '';
+        adminUser.value = '';
+        adminPass.value = '';
+        adminLoginModal.style.display = 'flex';
+        adminUser.focus();
+    }
+
+    function closeAdminLoginModal() { adminLoginModal.style.display = 'none'; }
+    function openAdminDashboard() { adminDashboardModal.style.display = 'flex'; }
+    function closeAdminDashboardModal() { adminDashboardModal.style.display = 'none'; }
+
+    adminLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (adminAuthenticated) openAdminDashboard();
+        else openAdminLogin();
+    });
+
+    closeAdminLogin.addEventListener('click', closeAdminLoginModal);
+    closeAdminDashboard.addEventListener('click', closeAdminDashboardModal);
+    adminLoginBtn.addEventListener('click', () => {
+        const username = adminUser.value.trim();
+        const password = adminPass.value;
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            adminAuthenticated = true;
+            closeAdminLoginModal();
+            openAdminDashboard();
+        } else {
+            adminError.textContent = 'Invalid username or password. Please try again.';
+        }
+    });
+
+    adminLogoutBtn.addEventListener('click', () => {
+        adminAuthenticated = false;
+        closeAdminDashboardModal();
+        openAdminLogin();
+    });
+
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeAdminLoginModal();
+            closeAdminDashboardModal();
+        }
+    });
+
+    new Swiper('.mySwiper', { loop: true, autoplay: { delay: 4000 }, pagination: { el: '.swiper-pagination', clickable: true } });
+</script>
+</body>
+</html>
